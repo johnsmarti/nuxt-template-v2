@@ -1,13 +1,15 @@
-<script setup lang="ts">
-import ButtonPrimary from "~/volt/ButtonPrimary.vue";
-import ButtonSecondary from "~/volt/ButtonSecondary.vue";
-import ButtonTertiary from "~/volt/ButtonTertiary.vue";
+<template>
+  <div>gfdfgdsf</div>
+</template>
+<script setup>
+definePageMeta({
+  title: "Home",
+  colorMode: "light",
+  layout: "default",
+});
+// Component setup
 </script>
 
-<template>
-  <div class="flex flex-col w-[150px]">
-    <ButtonPrimary>Click Me</ButtonPrimary>
-    <ButtonSecondary>No, Click Me </ButtonSecondary>
-    <ButtonTertiary>Shut up</ButtonTertiary>
-  </div>
-</template>
+<style>
+/* Add any additional styles here */
+</style>
