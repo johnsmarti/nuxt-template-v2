@@ -1,12 +1,12 @@
+import { useCookie, useNuxtApp } from "#app";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
-import { useNuxtApp, useCookie } from "#app";
 import type {
+  AccessIdentityPayload,
+  ForgotPasswordPayload,
+  IdentityPayload,
   LoginPayload,
   RegisterPayload,
-  ForgotPasswordPayload,
   ResetPasswordPayload,
-  IdentityPayload,
-  AccessIdentityPayload,
 } from "./interfaces";
 
 export function useLogin() {
@@ -26,6 +26,7 @@ export function useLogin() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries();
+      navigateTo("/");
     },
   });
 }

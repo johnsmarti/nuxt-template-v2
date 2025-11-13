@@ -1,0 +1,1 @@
+export const DISABLE_PASSWORD_VALIDATION = import.meta.env.VITE_DISABLE_PASSWORD_VALIDATION === "true";

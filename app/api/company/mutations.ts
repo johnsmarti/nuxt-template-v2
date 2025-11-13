@@ -1,13 +1,16 @@
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import type { Company } from '../../schemas/companies';
 
 export const useUpdateCompanyMutation = () => {
-  const { $api } = useNuxtApp();
+  const { $axios } = useNuxtApp()
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (companyData: Company) => {
-      const response = await $api.put('/company', companyData);
+    mutationFn: async (formData: FormData) => {
+      const response = await $axios.post('/companies/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       return response.data;
     },
     onSuccess: () => {

@@ -28,10 +28,10 @@
         <span>Voltar</span>
       </div>
       <div class="flex items-center space-x-3 text-sm">
-        <span>Já tem uma conta?</span>
+        <span>Primeira vez aqui?</span>
         <ButtonPrimary
           variant="outlined" 
-          label="Faça o login"
+          label="Cadastrar como Eleitor"
         @click="goRegister"
       />
     </div>
@@ -46,24 +46,33 @@
           class="relative shrink-0 font-['DM_Sans:SemiBold',_sans-serif] text-[32px] leading-[1.1] font-semibold tracking-[-0.96px] text-nowrap whitespace-pre"
           style="font-variation-settings: 14"
         >
-          Cadastro de Eleitor
+          Acesso do Eleitor
         </p>
         <div
           class="relative w-[min-content] min-w-full shrink-0 font-['DM_Sans:Regular',_sans-serif] text-[18px] leading-[1.35] font-normal"
           style="font-variation-settings: 14"
         >
-          <p class="mb-0">Preencha seus dados para participar da eleição.</p>
+          <p class="mb-0">Entre com seus dados para votar</p>
           <p>&nbsp;</p>
         </div>
       </div>
 
-   <Form :resolver="authResolver" @submit="onLoginSubmit" class="flex flex-col gap-4 w-full">
-           
+      <div class="mb-4">
+        <InputOverText id="cpf" v-model="cpf" placeholder="000.000.000-00" class="w-full"
+          >CPF ou Matrícula
+        </InputOverText>
+      </div>
+      <div class="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-3 text-center text-sm text-blue-700">
+        <i class="pi pi-info-circle mr-1"></i>
+        <strong>Como Acessar:</strong><br />
+        Use o mesmo CPF ou matrícula que você utilizou durante o cadastro de eleitor.
+      </div>
+
       <ButtonPrimary
         label="Acessar"
         iconPos="right"
         class="w-full !border-blue-600 !bg-blue-600 hover:!bg-blue-700"
-        type="submit"
+        @click="login"
       >
       <template #icon >
         <Icon name="lucide:arrow-right" />
@@ -76,41 +85,39 @@
       </p>
 
       <p class="mt-10 text-center text-xs text-gray-400">Termos e Condições | Perguntas Frequentes | Fale Conosco</p>
-    </Form>
-  </div>
+    </div>
     </template>
   </AuthLayout>
 </template>
 
 <script setup lang="ts">
-import type { LoginPayload } from '@/api/auth/interfaces';
-import { useLogin } from "@/api/auth/mutations";
+import { useLoginIdentity } from "@/api/auth/mutations";
 import AuthLayout from "@/components/layout/AuthLayout.vue";
-import { authResolver } from "@/schemas/auth";
 import ButtonPrimary from "@/volt/ButtonPrimary.vue";
-import { Form } from '@primevue/forms';
+import { ref } from "vue";
 import { useRouter } from "vue-router";
-
-const { mutate } = useLogin();
+import InputOverText from "~~/trash/InputOverText.vue";
+const { mutate } = useLoginIdentity();
 
 const router = useRouter();
+const cpf = ref("");
 
+const goBack = () => router.back();
+const goRegister = () => router.push("/register");
+const login = () => {
+  if (!cpf.value) return alert("Informe seu CPF ou matrícula.");
+  // lógica de autenticação
+  // router.push("/dashboard");
+  //
+  mutate({ identifier: cpf.value });
+};
 definePageMeta({
   layout: "auth",
 });
-
-const onLoginSubmit = async ({ valid, values }: { valid: boolean; values: Record<string, unknown> }) => {
-  if (valid) {
-    const payload = values as unknown as LoginPayload;
-    mutate(payload);
-  }
-};
-
-const goBack = async () => router.back();
-const goRegister = async () => router.push("/register");
-
 </script>
 
 <style scoped>
-/* Estilos customizados se necessário */
+body {
+  font-family: "Inter", sans-serif;
+}
 </style>

@@ -14,14 +14,14 @@
           @update:model-value="emitValue(slotProps, $event)"
           @focus="isFocused = true"
           @blur="isFocused = false"
-          placeholder=" "
+          :placeholder="placeholder"
         />
         <label
           :for="textareaId"
           class="bg-surface-0 pointer-events-none absolute left-3 px-1 transition-all duration-200"
           :class="[
             'text-surface-500',
-            isFocused || modelValueValue(slotProps)
+            isFocused || modelValueValue(slotProps) || overActive
               ? 'text-primary -top-2 text-xs leading-tight'
               : 'top-3 text-base leading-[1.2rem]',
           ]"
@@ -38,8 +38,8 @@
 </template>
 
 <script setup lang="ts">
-import Textarea, { type TextareaPassThroughOptions } from "primevue/textarea";
 import { FormField } from "@primevue/forms";
+import Textarea, { type TextareaPassThroughOptions } from "primevue/textarea";
 import { ref } from "vue";
 
 interface Props {
@@ -48,6 +48,8 @@ interface Props {
   modelValue?: string;
   invalid?: boolean;
   error?: string;
+  overActive?: boolean;
+  placeholder?: string;
 }
 
 const props = defineProps<Props>();

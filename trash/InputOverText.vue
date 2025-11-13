@@ -22,7 +22,7 @@
           class="bg-surface-0 pointer-events-none absolute left-3 px-1 transition-all duration-200"
           :class="[
             'text-surface-500',
-            isFocused || modelValueValue(slotProps) || OverActive
+            isFocused || modelValueValue(slotProps) || overActive
               ? 'text-primary -top-2 text-xs leading-tight'
               : 'top-1/2 -translate-y-1/2 text-base leading-[1.2rem]',
           ]"
@@ -38,10 +38,10 @@
 </template>
 
 <script setup lang="ts">
-import InputText, { type InputTextPassThroughOptions } from "primevue/inputtext";
 import { FormField } from "@primevue/forms";
+import InputText, { type InputTextPassThroughOptions } from "primevue/inputtext";
 import { ref } from "vue";
-import { ptViewMerge } from "./utils";
+import { ptViewMerge } from "../app/volt/utils";
 
 interface Props {
   name?: string;
@@ -49,7 +49,7 @@ interface Props {
   modelValue?: string;
   error?: string;
   invalid?: boolean;
-  OverActive?: boolean;
+  overActive?: boolean;
   placeholder?: string;
 }
 

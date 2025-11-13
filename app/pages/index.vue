@@ -6,6 +6,7 @@ definePageMeta({
   title: "Home",
   colorMode: "light",
   layout: "default",
+  middleware: "auth",
 });
 // Component setup
 </script>

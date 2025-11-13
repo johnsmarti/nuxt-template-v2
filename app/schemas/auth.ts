@@ -1,43 +1,26 @@
-import { createTypedSchema, yup } from "@/lib/validator";
-import { DISABLE_PASSWORD_VALIDATION } from "@/constants/flags";
+import { zodResolver } from "@primevue/forms/resolvers/zod";
+import { z } from "zod";
 
-export const signInSchema = createTypedSchema({
-  email: yup.string().email("Digite um email válido").trim().required("Email é obrigatório"),
-
-  password: yup
+const AuthSchema = z.object({
+  email: z.string().email("Digite um email válido").min(1, "Email é obrigatório"),
+  password: z
     .string()
-    .when([], {
-      is: () => !DISABLE_PASSWORD_VALIDATION,
-      then: (schema) =>
-        schema
-          .min(8, "A senha deve conter pelo menos 8 caracteres")
-          .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "A senha deve seguir as regras"),
-    })
-    .trim()
-    .required("A senha é obrigatória"),
-
-  rememberMe: yup.boolean().default(false),
+    .min(8, "A senha deve conter pelo menos 8 caracteres")
+    .refine((value) => /[a-z]/.test(value), "A senha deve conter pelo menos uma letra minúscula")
+    .refine((value) => /[A-Z]/.test(value), "A senha deve conter pelo menos uma letra maiúscula")
+    .refine((value) => /\d/.test(value), "A senha deve conter pelo menos um número")
+    .min(1, "Senha é obrigatória"),
 });
 
-export const forgotPasswordSchema = createTypedSchema({
-  email: yup.string().email("Digite um email válido").trim().required("Email é obrigatório"),
+export const authResolver = zodResolver(AuthSchema);
+
+const RegisterVoter = z.object({
+  name: z.string("O nome é obrigatório."),
+  email: z.string().email("Digite um email válido").min(1, "Email é obrigatório"),
+  phone: z.string(),
+  document: z.string().min(5, "Número de matricula obrigatório."),
 });
 
-export const resetPasswordSchema = createTypedSchema({
-  password: yup
-    .string()
-    .when([], {
-      is: () => DISABLE_PASSWORD_VALIDATION,
-      then: (schema) =>
-        schema
-          .min(8, "A senha deve conter pelo menos 8 caracteres")
-          .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "A senha deve seguir as regras"),
-    })
-    .transform((value) => value?.trim())
-    .required("A senha é obrigatória"),
-  confirmPassword: yup
-    .string()
-    .required("Confirme sua senha")
-    .transform((value) => value?.trim())
-    .oneOf([yup.ref("password")], "As senhas não conferem"),
-});
+// Criar register name, email, password e confirme password
+
+// Criar reset password email.

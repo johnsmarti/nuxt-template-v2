@@ -1,13 +1,13 @@
-import { useQuery } from '@tanstack/vue-query';
-import { companySchema } from '../../schemas/companies';
+import { companySchema } from "@/schemas/companies";
+import { useQuery } from "@tanstack/vue-query";
 
 export const useCompanyQuery = () => {
-  const { $api } = useNuxtApp();
+  const { $axios } = useNuxtApp();
 
   return useQuery({
-    queryKey: ['company'],
+    queryKey: ["company"],
     queryFn: async () => {
-      const response = await $api.get('/company');
+      const response = await $axios.get("/companies/1");
       return companySchema.parse(response.data);
     },
   });

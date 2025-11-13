@@ -81,7 +81,7 @@ const modelValue = defineModel<SelectModel>({ default: null });
 
 const theme = ref<SelectPassThroughOptions>({
     root: `inline-flex cursor-pointer relative select-none rounded-md p-fluid:flex
-        bg-surface-0 w-full
+        bg-surface-0
         border border-surface-300 hover:border-surface-400
         p-focus:border-primary
         p-filled:bg-surface-50

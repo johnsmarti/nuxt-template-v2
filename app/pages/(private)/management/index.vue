@@ -21,10 +21,15 @@
 </template>
 
 <script setup lang="ts">
-import ManagerTabs from "@/components/ManagerTabs.vue";
-import TabPanel from "@/volt/TabPanel.vue";
 import Company from "@/components/company/index.vue";
+import ManagerTabs from "@/components/ManagerTabs.vue";
 import Profile from "@/components/profile/index.vue";
+import TabPanel from "@/volt/TabPanel.vue";
+
+definePageMeta({
+    middleware: "auth",
+    layout: "default",
+})
 </script>
 
 <style scoped>
