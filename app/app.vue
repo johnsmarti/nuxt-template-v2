@@ -6,7 +6,7 @@
   </NuxtLayout>
 </template>
 <script setup lang="ts">
-import Toast from "@/volt/Toast.vue";
+import Toast from "@/components/volt/Toast.vue";
 import { useToast } from "primevue/usetoast";
 import { onMounted, onUnmounted } from "vue";
 

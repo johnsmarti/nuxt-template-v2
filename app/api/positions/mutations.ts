@@ -1,9 +1,10 @@
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { useNuxtApp } from '#app'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 export function usePositionCreate() {
   const { $axios } = useNuxtApp()
   const queryClient = useQueryClient()
+  const router = useRouter()
   return useMutation({
     mutationFn: async (data: any) => {
       const response = await $axios.post('/positions', data)
@@ -12,6 +13,7 @@ export function usePositionCreate() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['GET:POSITIONS'] })
       queryClient.invalidateQueries({ queryKey: ['GET:POSITIONS_BY_ELECTION'] })
+      router.push('/management/positions')
     }
   })
 }

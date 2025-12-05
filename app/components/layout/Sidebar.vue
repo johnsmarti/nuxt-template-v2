@@ -1,31 +1,24 @@
 <template>
   <div>
     <!-- Botão Hambúrguer (Mobile) -->
-    <button
-      @click="toggleSidebar"
+    <button @click="toggleSidebar"
       class="fixed top-4 left-4 z-50 rounded-lg bg-[#0d6efd] p-3 text-white shadow-lg transition-all duration-300 hover:bg-[#0356d6] md:hidden"
-      :class="{ 'left-60': isOpen }"
-    >
+      :class="{ 'left-60': isOpen }">
       <i :class="isOpen ? 'pi pi-times' : 'pi pi-bars'" class="text-xl"></i>
     </button>
 
     <!-- Overlay (Mobile) -->
-    <div
-      v-if="isOpen"
-      @click="closeSidebar"
+    <div v-if="isOpen" @click="closeSidebar"
       class="bg-opacity-50 fixed inset-0 z-40 bg-black transition-opacity duration-300 md:hidden"
-      :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-    ></div>
+      :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"></div>
 
     <!-- Sidebar -->
-    <aside
-      :class="[
-        'z-50 flex h-screen w-56 flex-col justify-between bg-gradient-to-b from-[#0d6efd] to-[#0356d6] text-white transition-transform duration-300 ease-in-out',
-        'fixed md:relative',
-        isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
-      ]"
-    >
-      <div>
+    <aside :class="[
+      'z-50 flex h-screen w-56 flex-col justify-between bg-gradient-to-b from-[#0d6efd] to-[#0356d6] text-white transition-transform duration-300 ease-in-out',
+      'fixed md:relative',
+      isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0',
+    ]">
+      <div class="">
         <!-- Logo -->
         <div class="p-6 text-2xl font-bold">
           EPIC<br />
@@ -35,27 +28,44 @@
         <!-- Menu -->
         <nav class="mt-6">
           <ul class="space-y-2">
-            <li v-for="item in menuItems" :key="item.label" @click="selectItem(item.label)" class="relative">
-              <div
-                :class="[
-                  'nav-link relative flex cursor-pointer items-center rounded-md px-5 py-4 text-base font-medium',
-                  activeItem === item.label ? 'active' : 'hover:bg-white/20',
-                ]"
-              >
+            <li v-for="item in menuItems" :key="item.label">
+              <!-- Item principal -->
+              <div @click="selectItem(item)" :class="[
+                'nav-link relative flex cursor-pointer items-center rounded-md px-5 py-4 text-base font-medium',
+                (activeItem === item.label && !item.hasDropdown) || (item.hasDropdown && isSubmenuOpen) ? 'active' : 'hover:bg-white/20',
+              ]">
                 <i :class="[item.icon, 'mr-3', 'icon-transition']"></i>
                 <span>{{ item.label }}</span>
 
                 <!-- Badge -->
-                <span
-                  v-if="item.badge"
-                  class="ml-auto rounded-full bg-white px-2 py-0.5 text-xs font-bold text-blue-600"
-                >
+                <span v-if="item.badge"
+                  class="ml-auto rounded-full bg-white px-2 py-0.5 text-xs font-bold text-blue-600">
                   {{ item.badge }}
                 </span>
 
-                <!-- seta (submenu) -->
-                <i v-if="item.hasDropdown" class="pi pi-chevron-down ml-2"></i>
+                <!-- Seta (submenu) -->
+                <Icon v-if="item.hasDropdown" :name="isSubmenuOpen ? 'lucide:chevron-up' : 'lucide:chevron-down'"
+                  class="ml-auto h-5 w-5 transition-transform duration-300" />
               </div>
+
+              <!-- Submenu -->
+              <transition name="submenu">
+                <div v-if="item.hasDropdown && isSubmenuOpen"
+                  class="submenu-container mx-4 my-2 overflow-hidden rounded-xl bg-white shadow-lg">
+                  <ul class="py-2">
+                    <li v-for="subItem in item.submenu" :key="subItem.label" @click.stop="selectSubItem(subItem.label)"
+                      :class="[
+                        'submenu-item flex cursor-pointer items-center px-4 py-3 text-sm font-medium text-gray-700 transition-all duration-200',
+                        activeSubItem === subItem.label
+                          ? 'bg-blue-50 text-blue-600 font-semibold'
+                          : 'hover:bg-gray-50',
+                      ]">
+                      <i :class="[subItem.icon, 'mr-3 text-blue-500']"></i>
+                      <span>{{ subItem.label }}</span>
+                    </li>
+                  </ul>
+                </div>
+              </transition>
             </li>
           </ul>
         </nav>
@@ -78,11 +88,25 @@
 import { ref } from "vue";
 
 const activeItem = ref("Painel Admin");
+const activeSubItem = ref("Dashboard");
 const isOpen = ref(false);
+const isSubmenuOpen = ref(false);
 
 const menuItems = [
   { label: "Dashboard", icon: "pi pi-home" },
-  { label: "Painel Admin", icon: "pi pi-sliders-h", hasDropdown: true },
+  {
+    label: "Painel Admin",
+    icon: "pi pi-sliders-h",
+    hasDropdown: true,
+    submenu: [
+      { label: "Dashboard", icon: "pi pi-chart-line" },
+      { label: "Eleições", icon: "pi pi-calendar" },
+      { label: "Cargos", icon: "pi pi-briefcase" },
+      { label: "Delegados", icon: "pi pi-users" },
+      { label: "Eleitores", icon: "pi pi-id-card" },
+      { label: "Candidatos", icon: "pi pi-user" },
+    ],
+  },
   { label: "Votação", icon: "pi pi-check-square" },
   { label: "Resultados", icon: "pi pi-chart-bar", badge: 50 },
   { label: "Contato", icon: "pi pi-envelope" },
@@ -96,9 +120,20 @@ function closeSidebar() {
   isOpen.value = false;
 }
 
-function selectItem(label) {
-  activeItem.value = label;
-  // Fecha o sidebar no mobile após selecionar
+function selectItem(item) {
+  if (item.hasDropdown) {
+    isSubmenuOpen.value = !isSubmenuOpen.value;
+  } else {
+    activeItem.value = item.label;
+    isSubmenuOpen.value = false;
+    if (window.innerWidth < 768) {
+      closeSidebar();
+    }
+  }
+}
+
+function selectSubItem(label) {
+  activeSubItem.value = label;
   if (window.innerWidth < 768) {
     closeSidebar();
   }
@@ -156,6 +191,7 @@ function selectItem(label) {
 
 /* Keyframes para o bounce do ícone */
 @keyframes iconBounce {
+
   0%,
   100% {
     transform: scale(1) rotate(0deg);
@@ -215,6 +251,7 @@ function selectItem(label) {
 }
 
 @keyframes badgePulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -222,6 +259,74 @@ function selectItem(label) {
 
   50% {
     transform: scale(1.05);
+  }
+}
+
+/* Estilos do Submenu */
+.submenu-container {
+  animation: submenuSlide 0.3s ease-out;
+}
+
+.submenu-item {
+  position: relative;
+}
+
+.submenu-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: #0d6efd;
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+
+.submenu-item:hover::before,
+.submenu-item.bg-blue-50::before {
+  transform: scaleY(1);
+}
+
+/* Transições do Submenu */
+.submenu-enter-active,
+.submenu-leave-active {
+  transition: all 0.3s ease;
+}
+
+.submenu-enter-from {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+.submenu-enter-to {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
+}
+
+.submenu-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 500px;
+}
+
+.submenu-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+  max-height: 0;
+}
+
+@keyframes submenuSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>

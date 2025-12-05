@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
-    <LayoutSidebar class="hidden md:block" />
+    <SidebarRoot class="hidden md:block" />
 
     <!-- Main -->
     <div class="flex flex-1 flex-col overflow-y-auto">
@@ -14,5 +14,5 @@
 </template>
 <script setup lang="ts">
 import LayoutHeader from "@/components/layout/Header.vue";
-import LayoutSidebar from "@/components/layout/Sidebar.vue";
+import SidebarRoot from "@/components/layout/sidebar/SidebarRoot.vue";
 </script>

@@ -30,8 +30,8 @@
   </Tabs>
 </template>
 <script setup lang="ts">
-import Tabs from "@/volt/Tabs.vue";
-import TabList from "@/volt/TabList.vue";
-import Tab from "@/volt/Tab.vue";
-import TabPanels from "@/volt/TabPanels.vue";
+import Tabs from "@/components/volt/Tabs.vue";
+import TabList from "@/components/volt/TabList.vue";
+import Tab from "@/components/volt/Tab.vue";
+import TabPanels from "@/components/volt/TabPanels.vue";
 </script>

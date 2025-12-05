@@ -1,14 +1,11 @@
-import { toTypedSchema } from '@vee-validate/yup'
-import * as yup from 'yup'
+import { zodResolver } from "@primevue/forms/resolvers/zod";
+import { z } from "zod";
 
-const positionsSchema = toTypedSchema(
-    yup.object({
-        name: yup.string().required('O nome da posição é obrigatório'),
-        description: yup.string(),
-        order_index: yup.string().required('O índice de ordem é obrigatório').typeError('O índice de ordem deve ser um número'),
-        max_candidates: yup.string().typeError('O número máximo de candidatos deve ser um número').required('O número máximo de candidatos é obrigatório').min(1),
-        election_uuid: yup.string().required('A eleição é obrigatória'),
-    })
-)
+const positionsSchema = z.object({
+    name: z.string().min(1, "O nome da posição é obrigatório"),
+    description: z.string(),
+    max_candidates: z.number().min(1, "O número máximo de candidatos é obrigatório").min(1),
+    election_id: z.string().min(1, "A eleição é obrigatória").uuid("Eleição inválida"),
+})
 
-export { positionsSchema }
+export const positionsResolver = zodResolver(positionsSchema)

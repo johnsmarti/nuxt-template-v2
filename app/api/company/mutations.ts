@@ -6,7 +6,7 @@ export const useUpdateCompanyMutation = () => {
 
   return useMutation({
     mutationFn: async (formData: FormData) => {
-      const response = await $axios.post('/companies/', formData, {
+      const response = await $axios.post('/companies/create_or_update', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

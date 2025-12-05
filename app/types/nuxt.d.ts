@@ -16,7 +16,7 @@ declare module "vue" {
   }
 }
 
-export {};
+export { };
 
 // Extensões para configuração de requisição do Axios com suporte a toast de sucesso
 declare module "axios" {
@@ -32,5 +32,13 @@ declare module "axios" {
     successToastSeverity?: "success" | "info";
     /** Duração do toast de sucesso em ms (default: 3000) */
     successToastLife?: number;
+    /** Mensagem customizada para o toast de erro */
+    errorMessageOverride?: string;
+    /** Severidade do toast de erro (default: "error") */
+    errorToastSeverity?: "error" | "warn";
+    /** Duração do toast de erro em ms (default: 5000) */
+    errorToastLife?: number;
+    /** Quando verdadeiro, esconde o toast de erro */
+    hideErrorToast?: boolean;
   }
 }

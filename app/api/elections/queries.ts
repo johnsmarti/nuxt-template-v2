@@ -1,6 +1,5 @@
 import { useNuxtApp } from '#app'
 import { useQuery } from '@tanstack/vue-query'
-import { unref } from 'vue'
 
 export const useElection = (electionId: string) => {
   const { $axios } = useNuxtApp()

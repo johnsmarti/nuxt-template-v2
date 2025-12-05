@@ -18,7 +18,7 @@ export const usePositions = () => {
   const { $axios } = useNuxtApp()
   return useQuery({
     queryKey: ['GET:POSITIONS'],
-    queryFn: () => $axios.get('/positions'),
+    queryFn: () => $axios.get('/positions').then(response => response.data),
   })
 }
 
@@ -26,7 +26,7 @@ export const usePositionsByElection = (electionId: string) => {
   const { $axios } = useNuxtApp()
   return useQuery({
     queryKey: ['GET:POSITIONS_BY_ELECTION', electionId],
-    queryFn: () => $axios.get(`/positions/election/${electionId}`),
+    queryFn: () => $axios.get(`/positions/election/${electionId}`).then(response => response.data),
     enabled: !!electionId,
   })
 }

@@ -1,4 +1,3 @@
-import { companySchema } from "@/schemas/companies";
 import { useQuery } from "@tanstack/vue-query";
 
 export const useCompanyQuery = () => {
@@ -7,8 +6,10 @@ export const useCompanyQuery = () => {
   return useQuery({
     queryKey: ["company"],
     queryFn: async () => {
-      const response = await $axios.get("/companies/1");
-      return companySchema.parse(response.data);
+      const response = await $axios.get("/companies", {
+        hideErrorToast: true
+      });
+      return response.data;
     },
   });
 };
