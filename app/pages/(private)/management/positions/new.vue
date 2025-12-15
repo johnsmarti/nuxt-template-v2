@@ -73,7 +73,7 @@ const { data } = useElections();
 // value and label only draft
 const elections = computed(
   () =>
-    data?.value?.data
+    data?.value
       ?.filter((e: any) => e.status === "draft")
       ?.map((e: any) => ({
         value: e.uuid,

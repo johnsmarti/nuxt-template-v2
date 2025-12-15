@@ -48,11 +48,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
-  date_start: {
+  dateStart: {
     type: String,
     required: true,
   },
-  date_end: {
+  dateEnd: {
     type: String,
     required: true,
   },
@@ -72,13 +72,15 @@ const statusColor = computed(() => {
       return "text-red-500 bg-red-100";
     case "draft":
       return "text-yellow-500 bg-yellow-100";
+    default:
+      return "text-gray-500 bg-gray-100";
   }
 });
 
 // Retornar apenas dd/mm - dd/mm
 const formatDates = computed(() => {
-  const startDate = new Date(props.date_start);
-  const endDate = new Date(props.date_end);
+  const startDate = new Date(props.dateStart);
+  const endDate = new Date(props.dateEnd);
   return `${startDate.getDate()}/${startDate.getMonth() + 1} - ${endDate.getDate()}/${endDate.getMonth() + 1}`;
 });
 
@@ -92,6 +94,8 @@ const statusTranslation = computed(() => {
       return "Encerrado";
     case "draft":
       return "Rascunho";
+    default:
+      return "Desconhecido";
   }
 });
 

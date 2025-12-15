@@ -7,7 +7,7 @@
       </div>
     </div>
 
-    <div class="rounded-2xl bg-white p-15 shadow">
+  <div class="rounded-2xl bg-white p-15 shadow">
       <Form :initial-values="initialValues" :resolver="positionsResolver" @submit="handleUpdatePosition">
         <template #default="{ errors, values, valid }">
           <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -16,15 +16,7 @@
             </FormField>
 
             <FormField v-slot="$field" name="election_id">
-              <Select
-                label="Eleição"
-                :options="electionOption"
-                option-label="label"
-                option-value="value"
-                :error-message="$field.error?.message"
-                placeholder="Eleição"
-                disabled
-              />
+              <Select label="Eleição" :options="electionOption" option-label="label" option-value="value" :error-message="$field.error?.message" placeholder="Eleição" disabled />
             </FormField>
 
             <FormField v-slot="$field" name="max_candidates">

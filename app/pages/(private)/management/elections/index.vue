@@ -28,17 +28,18 @@
     </Tabs>
     <div class="mt-6">
       <div class="flex flex-wrap items-center justify-center gap-6">
-        <CardElection
-          v-for="item in filterList(filter)"
-          :key="item.uuid"
-          :title="item.title"
-          :description="item.description"
-          :status="item.status"
-          :date-start="item.date_start"
-          :date-end="item.date_end"
-          @edit="edit(item.uuid)"
-          @remove="remove(item.uuid)"
-        />
+        <div v-for="item in filterList(filter)" :key="item.uuid">
+          <CardElection
+            :uuid="item.uuid"
+            :title="item.title"
+            :description="item.description"
+            :status="item.status"
+            :date-start="item.date_start"
+            :date-end="item.date_end"
+            @edit="edit"
+            @remove="remove"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -62,7 +63,7 @@ const filter = ref<"all" | "active" | "scheduled" | "draft" | "closed">("all");
 const { data } = useElections();
 
 const list = computed(() => {
-  const payload = data?.value?.data ?? [];
+  const payload = data?.value ?? [];
   return payload.map((e: any) => ({
     uuid: e.uuid,
     title: e.title,

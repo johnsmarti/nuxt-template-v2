@@ -15,7 +15,7 @@ export const menuItems: MenuItem[] = [
     lucide: 'lucide:sliders',
     to: '/management',
     children: [
-      { label: 'Dashboard', icon: 'pi pi-chart-line', lucide: 'lucide:gauge', to: '/management' },
+      { label: 'Dashboard', icon: 'pi pi-chart-line', lucide: 'lucide:gauge', to: '/management/dashboard' },
       { label: 'Eleições', icon: 'pi pi-calendar', lucide: 'lucide:calendar', to: '/management/elections' },
       { label: 'Cargos', icon: 'pi pi-briefcase', lucide: 'lucide:briefcase', to: '/management/positions' },
       { label: 'Delegados', icon: 'pi pi-users', lucide: 'lucide:users', to: '/management/delegates' },
